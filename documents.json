@@ -12,8 +12,13 @@
         "sql": "select name,owner,inventory_access,access_review_due from sites where id=$1"
       },
       {
-        "title": "Substances and declared maxima",
-        "sql": "select chemical,unit,maximum_quantity,onsite_quantity,waste_quantity,un_number,locations,storage_notes,sds_reference from v_site_inventory where site_id=$1 order by chemical"
+        "title": "Declared maxima and recorded quantities",
+        "sql": "select chemical,unit,coalesce(maximum_quantity::text,'not declared') as maximum_quantity,onsite_quantity,waste_quantity from v_site_inventory where site_id=$1 order by chemical"
+      },
+      {
+        "title": "Locations and safety references",
+        "note": "A reference is not a copy of the safety sheet. Confirm actual access and current information.",
+        "sql": "select chemical,coalesce(locations,'no active containers recorded') as locations,case when not un_reviewed then 'not reviewed' when un_number is null then 'none, reviewed' else un_number end as un_number,coalesce(storage_notes,'not recorded') as storage_notes,coalesce(sds_reference,'not recorded') as safety_sheet from v_site_inventory where site_id=$1 order by chemical"
       },
       {
         "title": "Outstanding record checks",
