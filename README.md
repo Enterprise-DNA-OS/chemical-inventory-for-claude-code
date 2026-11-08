@@ -6,7 +6,7 @@ Know what is on each shelf, what has expired, what is awaiting collection and wh
 |---|---|---|
 | Free, MIT. Install and run the demo. | Your locations, rules, LabCup mapping and shared screens. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=labcup) · [Instead of LabCup](https://enterprisedna.co/omni/instead-of/labcup)
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=labcup) · [Instead of LabCup](https://enterprisedna.co/omni/instead-of/labcup?utm_source=github&utm_medium=readme&utm_campaign=labcup)
 
 ## Start with the Monday review
 
