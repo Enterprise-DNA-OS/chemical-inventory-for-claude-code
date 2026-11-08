@@ -1,0 +1,11 @@
+---
+description: "Find overdue stocktake, expired stock, waste and actions"
+---
+
+Read `CLAUDE.md` and `docs/operations.md`. Resolve names against current records, not chat history.
+
+```bash
+npm run chemicals -- attention --json
+```
+
+Report the returned facts, the site and any missing information. Do not invent records or use a clean report as a compliance certificate.

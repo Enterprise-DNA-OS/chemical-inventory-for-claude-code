@@ -1,0 +1,12 @@
+{
+  "barcode": "Barcode",
+  "name": "Chemical name",
+  "location": "Location",
+  "quantity": "Quantity",
+  "unit": "Unit",
+  "owner": "Owner",
+  "lot": "Lot",
+  "expiry": "Expiry",
+  "state": "State",
+  "hazardous": "Hazardous"
+}

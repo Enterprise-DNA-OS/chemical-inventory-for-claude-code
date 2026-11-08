@@ -1,11 +1,50 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "site-inventory",
+    "title": "Hazardous substances inventory working draft",
+    "for_each": "select id,name from sites order by code",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Site and access",
+        "layout": "record",
+        "note": "Human review required. Keep confirmed inventory and actual current safety sheets accessible after evacuation. This working draft is not a safety certificate.",
+        "sql": "select name,owner,inventory_access,access_review_due from sites where id=$1"
+      },
+      {
+        "title": "Substances and declared maxima",
+        "sql": "select chemical,unit,maximum_quantity,onsite_quantity,waste_quantity,un_number,locations,storage_notes,sds_reference from v_site_inventory where site_id=$1 order by chemical"
+      },
+      {
+        "title": "Outstanding record checks",
+        "sql": "select c.record,c.rule,c.issue from v_compliance c join sites s on s.code=c.site where s.id=$1 order by c.record,c.rule"
+      }
+    ]
+  },
+  {
+    "name": "stocktake-sheet",
+    "title": "Physical stocktake working sheet",
+    "for_each": "select id,name from sites order by code",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Count and record discrepancies",
+        "note": "Print for counting. Blank observed quantity and initials are intentional. Update the database using log-stock after the physical check.",
+        "sql": "select c.code,ch.name as chemical,l.name as location,c.quantity as recorded_quantity,ch.unit,'' as observed_quantity,'' as initials from containers c join chemicals ch on ch.id=c.chemical_id join locations l on l.id=c.location_id where l.site_id=$1 and c.state<>'removed' order by l.name,c.code"
+      }
+    ]
+  },
+  {
+    "name": "waste-handover",
+    "title": "Waste collection handover working draft",
+    "for_each": "select id,name from sites order by code",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Awaiting collection",
+        "note": "Not a transport document or classification. A competent person and the collection provider verify classification and disposal requirements. Nothing is sent.",
+        "sql": "select c.code,ch.name as chemical,c.quantity,ch.unit,l.name as location,c.owner from containers c join chemicals ch on ch.id=c.chemical_id join locations l on l.id=c.location_id where l.site_id=$1 and c.state='waste' order by c.code"
+      }
     ]
   }
 ]

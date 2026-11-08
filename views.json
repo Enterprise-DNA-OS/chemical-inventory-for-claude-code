@@ -1,13 +1,38 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Chemical Inventory for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Chemical inventory weekly review",
+    "subtitle": "Recorded information only. Confirm physical stock and safety documents.",
     "sections": [
       {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "select * from v_attention order by site,record,reason"
+      },
+      {
+        "title": "Record completeness",
+        "sql": "select * from v_compliance order by site,record,rule"
+      }
+    ]
+  },
+  {
+    "name": "site-inventory",
+    "title": "Declared site maxima and current stock",
+    "subtitle": "Current quantities never replace the declared maximum likely on site.",
+    "sections": [
+      {
+        "title": "Site inventory",
+        "sql": "select site,chemical,unit,onsite_quantity,waste_quantity,maximum_quantity,review_due from v_site_inventory order by site,chemical"
+      }
+    ]
+  },
+  {
+    "name": "stocktake",
+    "title": "Stocktake preparation",
+    "subtitle": "Read-only snapshot. Record observed counts through the stock log.",
+    "sections": [
+      {
+        "title": "Containers",
+        "sql": "select code,chemical,site,location,quantity,unit,counted_on,state from v_containers where state<>'removed' order by site,location,code"
       }
     ]
   }

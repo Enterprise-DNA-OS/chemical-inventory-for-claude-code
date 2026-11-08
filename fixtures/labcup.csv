@@ -1,0 +1,3 @@
+Barcode,Chemical name,Location,Quantity,Unit,Owner,Lot,Expiry,State,Hazardous,Custom note
+DEMO-IMPORT-01,Fictional wash blend,North cabinet,2.5,L,Mere,L1,2027-12-01,stock,unknown,"Fictional fixture, not a vendor export"
+DEMO-IMPORT-02,Fictional wash blend,North waste,0.5,L,Ari,L2,,waste,unknown,Retain original columns

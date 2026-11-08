@@ -1,115 +1,87 @@
-<h1 align="center">Chemical Inventory for Claude Code</h1>
+# Chemical Inventory for Claude Code
 
-<p align="center">
-  <strong>The open-source chemical inventory that is just a database and Claude Code.</strong>
-</p>
+Know what is on each shelf, what has expired, what is awaiting collection and which site inventory records need attention. Keep the containers, movements and declared maxima in a database you own.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free, MIT. Install and run the demo. | Your locations, rules, LabCup mapping and shared screens. | Installed and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your LabCup data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=labcup">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/labcup?utm_source=github&utm_medium=readme&utm_campaign=labcup">How it works</a></td>
-  </tr>
-</table>
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=labcup) · [Instead of LabCup](https://enterprisedna.co/omni/instead-of/labcup)
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-labcup">Instead of LabCup</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## Start with the Monday review
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Chemical Inventory for Claude Code does the job you pay LabCup for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the LabCup dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays LabCup per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=labcup).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Requires Node 20 or later.
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/chemical-inventory-for-claude-code.git
-cd chemical-inventory-for-claude-code
 npm install
 npm run demo
+npm run chemicals -- weekly-review
+npm run docs
+npm run view
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Open the folder in Claude Code, Codex, OpenCode or Cursor. Every runtime uses AGENTS.md, CLAUDE.md and the same slash commands. PGlite runs locally. DATABASE_URL selects PostgreSQL. Never seed a working database.
 
-### Use it with your own Postgres or Supabase
+The demo is fictional: two laboratories, five containers, stale counts, expired stock, waste awaiting collection and missing safety information. Dates are relative to the first seed. Re-seeding preserves records. None of the fictional chemical information is suitable for handling real substances.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## Weekly rituals
 
-## The commands
+/stocktake prepares the physical count. /expiring lists overdue and upcoming dates. /waste shows material still awaiting collection. /site-inventory compares declared maxima with recorded onsite quantities. /compliance finds missing record evidence. /weekly-review combines attention, compliance and expiry. /log-stock and /add-action record the work that follows.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+30 CLI commands and 34 slash-command recipes. Every CLI command supports --json. Changes require --actor and support --dry-run. Codes, partial ids and case-insensitive names work. Ambiguous matches list candidates and exit 1. [Full command syntax](docs/operations.md).
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Ten questions you can answer today
 
-## Instead of LabCup
+These are demonstrated questions for this system. We do not claim that LabCup cannot answer them.
 
-<!-- TODO(author): how to bring data across from LabCup; link docs/replace-labcup.md -->
+1. Which containers have not been counted within our review interval? Run stocktake and attention.
+2. Which expired containers still have stock? Run expiring.
+3. How much recorded onsite material is already marked as waste? Run site-inventory.
+4. Where does current stock exceed the independently declared maximum? Run compliance.
+5. Which substances lack a reviewed safety-sheet reference? Run compliance.
+6. Which site has no recorded emergency inventory access arrangement? Run compliance.
+7. Which owner has the most overdue inventory work? Run owner-load.
+8. What quantity and location changed during a container movement? Run container.
+9. Which follow-up was closed, by whom, with what evidence? Run activity and actions.
+10. Which imported fields came from the original export? Run container on the imported barcode record.
 
-## Architecture
+## Bring your inventory
 
+```bash
+npm run chemicals -- import labcup --file=fixtures/labcup.csv --map=fixtures/labcup-map.json --source=fictional-demo --site=DEMO-NORTH --actor="Your name" --dry-run
 ```
-chemical-inventory-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+The fixture is fictional. For real data, map the actual LabCup headings and use an authorised CSV or XLSX export. The single import command preserves original columns, reconciles unchanged repeats and rolls back an invalid batch. It never infers a missing hazard classification or overwrites changed duplicates. [Switching guide](docs/replace-labcup.md).
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Records, documents and views
 
-## Contributing
+The declared maximum likely at a workplace is separate from current stock. Waste stays onsite until collection is recorded. No incompatible units are summed. Stock movements retain before and after quantities, locations and evidence.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+Edit brand.json once. npm run docs produces a site inventory working draft, stocktake sheet and waste handover working draft for each site. npm run view produces the weekly review, site quantities and stocktake snapshots. Draft commands write private HTML and send nothing.
 
-## Want it installed and run for you?
+/compliance checks selected inventory fields against the sources in [compliance.md](docs/compliance.md). It cannot classify chemicals, validate an SDS, assess safe storage or certify compliance. A competent person must review applicability and emergency access. This base does not replace mobile scanning, automatic SDS sourcing or live emergency information. [Why no front end](docs/why-no-front-end.md).
 
-Enterprise DNA installs Chemical Inventory for Claude Code for your business, migrates your LabCup data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+## Your first hour: ten things to ask for
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=labcup)
-- Read more: [enterprisedna.co/omni/instead-of/labcup](https://enterprisedna.co/omni/instead-of/labcup?utm_source=github&utm_medium=readme&utm_campaign=labcup)
+1. Put our laboratory's name and logo on the reports.
+2. Show the oldest physical counts.
+3. Show expired stock separately from waste.
+4. Explain why the solvent declaration needs review.
+5. Draft a waste handover for the north site.
+6. Test our column mapping without saving records.
+7. Add our sites and location codes.
+8. Assign follow-up to the inventory owner.
+9. Add a report grouped by room and substance.
+10. Add a purchasing reference field with a tested migration.
 
-## License
+/customise writes and tests a numbered migration. /new-view adds a read-only report. The database is the record, the agent is the door.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+## Verification and scope
+
+npm test covers every command, migration and seed idempotence, quantities, waste custody, independent maxima, invalid and ambiguous input, transactional CSV/XLSX import, repeated and changed duplicates, audit history, export, escaped HTML, documents and views. Windows/Linux and PostgreSQL CI are configured. See [operations](docs/operations.md) for access, backup and shared-use requirements.
+
+The selection uses an old reported annual LabCup quote and an official historic contract award. Neither is a current NZ/AU subscription price. [Evidence and six scores](docs/research.md). No public vendor price is presented as a current price, and no savings are promised.
+
+Enterprise DNA maps your records, builds your workflow and shared interfaces, and runs your version through Omni by Enterprise DNA. One setup fee, then a retainer. [Book 30 minutes with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=labcup).
+
+MIT. Not affiliated with LabCup or Anthropic. Hosting and agent usage have their own costs.

@@ -21,6 +21,9 @@ const isMain = process.argv[1] && import.meta.url === pathToFileURL(path.resolve
 if (isMain) {
   const db = await getDb();
   try {
+    if (db.mode === 'postgres' && !process.argv.includes('--demo-database')) {
+      throw new Error('Shared database seed requires --demo-database. Use only an empty disposable demo database.');
+    }
     await seed(db);
     console.log(`seed: demo data ready (${db.mode})`);
   } finally {
